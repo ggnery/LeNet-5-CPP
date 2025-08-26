@@ -1,6 +1,6 @@
-#include "activations.hpp"
-#include "math_utils.hpp"
-#include "activation.hpp"
+#include "include/activations.hpp"
+#include "include/math_utils.hpp"
+#include "include/activation.hpp"
 
 
 template class Tanh<float>;

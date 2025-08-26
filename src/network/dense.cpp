@@ -1,4 +1,4 @@
-#include "dense.hpp"
+#include "include/dense.hpp"
 
 template class Dense<double>;
 template class Dense<float>;

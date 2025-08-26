@@ -1,4 +1,4 @@
-#include "math_utils.hpp"
+#include "include/math_utils.hpp"
 
 template dlib::matrix<float> tanh_prime<float>(dlib::matrix<float>);
 template dlib::matrix<double> tanh_prime<double>(dlib::matrix<double>);

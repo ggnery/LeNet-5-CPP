@@ -1,5 +1,5 @@
-#include "network/dense.hpp"
-#include "network/activations.hpp"
+#include "network/include/dense.hpp"
+#include "network/include/activations.hpp"
 #include <iostream>
 
 int main(){

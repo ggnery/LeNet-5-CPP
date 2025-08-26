@@ -1,4 +1,4 @@
-#include "activation.hpp"
+#include "include/activation.hpp"
 
 template class Activation<double>;
 template class Activation<float>;
