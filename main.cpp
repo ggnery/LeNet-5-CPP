@@ -1,4 +1,4 @@
-#include "network/layer.hpp"
+#include "network/dense.hpp"
 
 int main(){
 

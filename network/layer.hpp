@@ -6,20 +6,17 @@
 template <typename T>
 class Layer{
     public:
-        dlib::matrix<T>* input;
-        dlib::matrix<T>* output;
+        dlib::matrix<T> input;
+        dlib::matrix<T> output;
 
         // Constructor
-        Layer(): input(nullptr), output(nullptr) {}
-
-        // Destructor
-        ~Layer(){
-            delete input;
-            delete output;
+        Layer(){
+            this->input = dlib::matrix<T>();
+            this->output = dlib::matrix<T>();
         }
 
-        virtual dlib::vector<T> forward(dlib::vector<T> input) = 0;
-        virtual dlib::vector<T> backward(dlib::vector<T> output_gradient) = 0;
+        virtual dlib::matrix<T> forward(dlib::matrix<T> input) = 0;
+        virtual dlib::matrix<T> backward(dlib::matrix<T> output_gradient, double eta) = 0;
 };
 
 #endif // LAYER_HPP
