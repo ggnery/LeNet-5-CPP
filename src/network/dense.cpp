@@ -1,8 +1,8 @@
 #include "dense.hpp"
-#include <dlib/matrix/matrix_utilities.h>
 
 template class Dense<double>;
 template class Dense<float>;
+template class Dense<long double>;
 
 // Constructor
 template <typename T>

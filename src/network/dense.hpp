@@ -1,6 +1,7 @@
 #ifndef DENSE_HPP
 #define DENSE_HPP
 
+#include <dlib/matrix/matrix_utilities.h>
 #include "layer.hpp"
 
 template <typename T>
