@@ -9,12 +9,6 @@ class Layer{
         dlib::matrix<T> input;
         dlib::matrix<T> output;
 
-        // Constructor
-        Layer(){
-            this->input = dlib::matrix<T>();
-            this->output = dlib::matrix<T>();
-        }
-
         virtual dlib::matrix<T> forward(dlib::matrix<T> input) = 0;
         virtual dlib::matrix<T> backward(dlib::matrix<T> output_gradient, double eta) = 0;
 };
