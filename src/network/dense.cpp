@@ -1,12 +1,14 @@
 #include "dense.hpp"
+#include <dlib/matrix/matrix_utilities.h>
 
 template class Dense<double>;
+template class Dense<float>;
 
 // Constructor
 template <typename T>
 Dense<T>::Dense(long input_size, long output_size){
-    this->weights = dlib::randm(output_size, input_size) / std::sqrt(static_cast<T>(input_size)); // W ~ N(0,1) 
-    this->bias = dlib::randm(output_size, 1); // b ~ N(0,1)
+    this->weights = dlib::matrix_cast<T>(dlib::randm(output_size, input_size) / std::sqrt(static_cast<T>(input_size))); // W ~ N(0,1) 
+    this->bias = dlib::matrix_cast<T>(dlib::randm(output_size, 1)); // b ~ N(0,1)
 }
 
 //Forward
