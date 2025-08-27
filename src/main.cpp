@@ -1,15 +1,23 @@
 #include "network/include/dense.hpp"
 #include "network/include/activations.hpp"
+#include "network/include/layer.hpp"
 #include "network/include/losses.hpp"
-#include <iostream>
+#include "network/include/network.hpp"
+#include <memory>
+#include <vector>
 
 int main(){
-    Dense layer = Dense(3, 3);
-    Tanh tanh = Tanh();
-    auto a = layer.bias;
-    auto b = tanh.f_prime(layer.bias);
+    torch::Tensor x = torch::reshape(torch::tensor({{0.0, 0.0}, {0.0, 1.0}, {1.0, 0.0}, {1.0, 1.0}}), {4, 2, 1});
+    torch::Tensor y = torch::reshape(torch::tensor({{0.0}, {1.0}, {1.0}, {0.0}}), {4, 1, 1});
+    torch::Tensor x_test = torch::reshape(torch::tensor({{0.0, 0.0}, {0.01, 0.99}, {0.99, 0.01}, {0.85, 0.75}}), {4, 2, 1});
 
-    std::cout << cross_entropy_prime(a, b);
+    std::vector<std::unique_ptr<Layer>> layers;
+    layers.push_back(std::make_unique<Dense>(2, 3));
+    layers.push_back(std::make_unique<Sigmoid>());
+    layers.push_back(std::make_unique<Dense>(3, 1));
+    layers.push_back(std::make_unique<Sigmoid>());
 
+    Network network = Network(std::move(layers), mse, mse_prime, 0.1, 1000); 
+    network.train(x, y);
     return 0;
 }

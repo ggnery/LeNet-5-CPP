@@ -8,6 +8,7 @@ class Layer{
         torch::Tensor input;
         torch::Tensor output;
 
+        virtual ~Layer() = default;
         virtual torch::Tensor forward(torch::Tensor input) = 0;
         virtual torch::Tensor backward(torch::Tensor output_gradient, double eta) = 0;
 };
