@@ -1,29 +1,22 @@
 #include "include/dense.hpp"
 
-template class Dense<double>;
-template class Dense<float>;
-template class Dense<long double>;
-
 // Constructor
-template <typename T>
-Dense<T>::Dense(long input_size, long output_size){
-    this->weights = dlib::matrix_cast<T>(dlib::gaussian_randm(output_size, input_size) / std::sqrt(static_cast<T>(input_size))); // W ~ N(0,1/sqrt(input_size)) 
-    this->bias = dlib::matrix_cast<T>(dlib::gaussian_randm(output_size, 1)); // b ~ N(0,1)
+Dense::Dense(long input_size, long output_size){
+    this->weights = torch::randn({output_size, input_size}) / std::sqrt(static_cast<float>(input_size)); // W ~ N(0, 1/sqtr(n_in))
+    this->bias = torch::randn({output_size, 1}); // b ~ N(0, 1)
 }
 
 //Forward
-template <typename T>
-dlib::matrix<T> Dense<T>::forward(dlib::matrix<T> input) {
+torch::Tensor Dense::forward(torch::Tensor input) {
     this->input = input;
-    return this->weights * input + this->bias; // W*x + b
+    return torch::matmul(this->weights, input) + this->bias; // W*x + b
 }
 
 // Backward
-template <typename T>
-dlib::matrix<T> Dense<T>::backward(dlib::matrix<T> output_gradient, double eta) {
-    dlib::matrix<T> weight_gradient = output_gradient * dlib::trans(this->input); // ∂E/∂W = ∂E/∂Y * X^T
-    dlib::matrix<T> bias_gradient = output_gradient; // ∂E/∂B = ∂E/∂Y 
-    dlib::matrix<T> input_gradient =  dlib::trans(this->weights) * output_gradient; // ∂E/∂X = W^T * ∂E/∂Y 
+torch::Tensor Dense::backward(torch::Tensor output_gradient, double eta) {
+    torch::Tensor weight_gradient = torch::matmul(output_gradient, torch::transpose(this->input, 0 ,1)); // ∂E/∂W = ∂E/∂Y * X^T
+    torch::Tensor bias_gradient = output_gradient; // ∂E/∂B = ∂E/∂Y 
+    torch::Tensor input_gradient =  torch::matmul(torch::transpose(this->weights, 0, 1), output_gradient); // ∂E/∂X = W^T * ∂E/∂Y 
 
     // SGD
     this->weights -= eta * weight_gradient;

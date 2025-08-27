@@ -1,20 +1,18 @@
 #ifndef DENSE_HPP
 #define DENSE_HPP
 
-#include <dlib/matrix/matrix_utilities.h>
 #include "layer.hpp"
 
-template <typename T>
-class Dense: public Layer<T>{
+class Dense: public Layer{
     public:
-        dlib::matrix<T> weights;
-        dlib::matrix<T> bias;
+        torch::Tensor weights;
+        torch::Tensor bias;
 
         // Constructor
         Dense(long input_size, long output_size);
     
-        dlib::matrix<T> forward(dlib::matrix<T> input);
-        dlib::matrix<T> backward(dlib::matrix<T> output_gradient, double eta);
+        torch::Tensor forward(torch::Tensor input);
+        torch::Tensor backward(torch::Tensor output_gradient, double eta);
 };
 
 #endif // DENSE_HPP

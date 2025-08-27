@@ -4,26 +4,24 @@
 #include "activation.hpp"
 #include "math_utils.hpp"
 
-template<typename T>
-class Tanh: public Activation<T>{
+class Tanh: public Activation{
     public:
 
     //Constructor
-    Tanh<T>(): Activation<T>(
-        [](dlib::matrix<T> x) { return dlib::tanh(x); },
-        [](dlib::matrix<T> x) { return tanh_prime(x); }
+    Tanh(): Activation(
+        [](torch::Tensor x) { return torch::tanh(x); },
+        [](torch::Tensor x) { return tanh_prime(x); }
     ) {}
 
 };
 
-template<typename T>
-class Sigmoid: public Activation<T>{
+class Sigmoid: public Activation{
     public:
 
     // Constructor
-    Sigmoid<T>(): Activation<T> (
-        [](dlib::matrix<T> x) { return dlib::sigmoid(x); }, 
-        [](dlib::matrix<T> x) { return sigmoid_prime(x); }
+    Sigmoid(): Activation (
+        [](torch::Tensor x) { return torch::sigmoid(x); }, 
+        [](torch::Tensor x) { return sigmoid_prime(x); }
     ) {}
 };
 

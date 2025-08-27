@@ -1,31 +1,24 @@
 #ifndef LOSSES_HPP
 #define LOSSES_HPP
 
-#include <dlib/matrix/matrix.h>
-#include <dlib/matrix/matrix_math_functions.h>
-#include <dlib/matrix/matrix_utilities.h>
+#include <torch/script.h>
 
 template <typename T>
-inline T mse(dlib::matrix<T> y_true, dlib::matrix<T> y_pred){
-    return dlib::mean(dlib::pow(2, y_true - y_pred));
+inline T mse(torch::Tensor y_true, torch::Tensor y_pred){
+    return torch::mean(torch::pow(2, y_true - y_pred));
 };
 
-template <typename T>
-inline dlib::matrix<T> mse_prime(dlib::matrix<T> y_true, dlib::matrix<T> y_pred){
-    return 2 * (y_pred - y_true) / y_true.nr();
+inline torch::Tensor mse_prime(torch::Tensor y_true, torch::Tensor y_pred){
+    return 2 * (y_pred - y_true) / y_true.size(0);
 }
 
 template <typename T>
-inline T cross_entropy(dlib::matrix<T> y_true, dlib::matrix<T> y_pred) {
-    return dlib::sum(
-        dlib::pointwise_multiply(-y_true, dlib::log(y_pred)) - 
-        dlib::pointwise_multiply((1 - y_true), dlib::log(1 -y_pred))
-    );
+inline T cross_entropy(torch::Tensor y_true, torch::Tensor y_pred) {
+    return torch::sum((-y_true * torch::log(y_pred)) - ((1 - y_true) * torch::log(1 -y_pred)));
 }
 
-template <typename T>
-inline dlib::matrix<T> cross_entropy_prime(dlib::matrix<T> y_true, dlib::matrix<T> y_pred) {
-    return ((1 - y_true)/(1 - y_pred) - (y_true/y_pred) ) / y_true.nr();
+inline torch::Tensor cross_entropy_prime(torch::Tensor y_true, torch::Tensor y_pred) {
+    return ((1 - y_true)/(1 - y_pred) - (y_true/y_pred) ) / y_true.size(0);
 }
 
 #endif //LOSSES_HPP

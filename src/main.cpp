@@ -4,12 +4,12 @@
 #include <iostream>
 
 int main(){
-    Dense<long double> layer = Dense<long double>(3, 3);
-    Tanh<long double> tanh = Tanh<long double>();
+    Dense layer = Dense(3, 3);
+    Tanh tanh = Tanh();
     auto a = layer.bias;
     auto b = tanh.f_prime(layer.bias);
 
-    std::cout << cross_entropy(a, b);
+    std::cout << cross_entropy_prime(a, b);
 
     return 0;
 }
