@@ -2,13 +2,14 @@
 #define CONVOLUTION_HPP
 
 #include "layer.hpp"
+#include <ATen/core/ATen_fwd.h>
 #include <tuple>
 
 class Convolutional: public Layer {
     public:
-    std::tuple<int, int, int> input_shape;
-    std::tuple<int, int, int> output_shape;
-    std::tuple<int, int, int, int> kernels_shape;
+    torch::IntArrayRef input_shape; // (CxHxW)
+    torch::IntArrayRef output_shape; // (dxH'xW')
+    torch::IntArrayRef kernels_shape; // (dxCxkxk)
 
     int input_channels;
     int n_kernels;
@@ -16,7 +17,7 @@ class Convolutional: public Layer {
     torch::Tensor kernels;
     torch::Tensor bias;
 
-    Convolutional(std::tuple<int, int, int> input_shape, int kernel_size, int channels);
+    Convolutional(torch::IntArrayRef input_shape, int kernel_size, int channels);
     torch::Tensor forward(torch::Tensor input);
     torch::Tensor backward(torch::Tensor output_gradient, double eta);
 
