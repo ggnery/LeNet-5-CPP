@@ -23,9 +23,9 @@ torch::Tensor Network::eval(torch::Tensor input){
 
 void Network::train(torch::Tensor x_train, torch::Tensor y_train, bool verbose){
     int train_size = x_train.size(0);
-    for(size_t epoch = 0; epoch < this->epochs; epoch++){
+    for(int epoch = 0; epoch < this->epochs; epoch++){
         double loss_sum = 0;
-        for (size_t i = 0; i < train_size; i++){
+        for (int i = 0; i < train_size; i++){
             torch::Tensor x = x_train[i];
             torch::Tensor y = y_train[i];
 
@@ -34,13 +34,13 @@ void Network::train(torch::Tensor x_train, torch::Tensor y_train, bool verbose){
 
             //backward
             torch::Tensor output_gradient = this->loss_prime(y, y_pred);
-            for(size_t j = static_cast<int>(this->layers.size()) - 1; j >= 0; j--) {
+            for(int j = this->layers.size() - 1; j >= 0; j--) {
                 output_gradient = this->layers[j]->backward(output_gradient, this->eta);
             }
         }
 
         if (verbose){
-            std::cout << "Loss in epoch " << epoch + 1 <<": " << loss_sum/train_size;
+            std::cout << "Loss in epoch " << epoch + 1 <<": " << loss_sum/train_size << std::endl;
         }
     }
 }

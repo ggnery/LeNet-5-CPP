@@ -3,8 +3,6 @@
 #include "network/include/layer.hpp"
 #include "network/include/losses.hpp"
 #include "network/include/network.hpp"
-#include <memory>
-#include <vector>
 
 int main(){
     torch::Tensor x = torch::reshape(torch::tensor({{0.0, 0.0}, {0.0, 1.0}, {1.0, 0.0}, {1.0, 1.0}}), {4, 2, 1});
@@ -17,7 +15,12 @@ int main(){
     layers.push_back(std::make_unique<Dense>(3, 1));
     layers.push_back(std::make_unique<Sigmoid>());
 
-    Network network = Network(std::move(layers), mse, mse_prime, 0.1, 1000); 
-    network.train(x, y);
+    Network network = Network(std::move(layers), mse, mse_prime, 0.1, 10000); 
+    network.train(x, y, true);
+    
+    for (int i = 0; i < x_test.size(0); i++){
+        std::cout << network.eval(x_test[i]) << std::endl;
+    }
+    
     return 0;
 }
