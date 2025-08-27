@@ -9,7 +9,7 @@ class Dense: public Layer{
         torch::Tensor bias;
 
         // Constructor
-        Dense(long input_size, long output_size);
+        Dense(int input_size, int output_size);
     
         torch::Tensor forward(torch::Tensor input);
         torch::Tensor backward(torch::Tensor output_gradient, double eta);
