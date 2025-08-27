@@ -3,7 +3,7 @@
 
 #include "layer.hpp"
 
-class Reshape: Layer {
+class Reshape: public Layer {
     public:
     std::vector<int64_t> input_shape;
     std::vector<int64_t> output_shape;
