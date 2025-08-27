@@ -17,6 +17,8 @@ class Convolutional: public Layer {
     torch::Tensor bias;
 
     Convolutional(std::tuple<int, int, int> input_shape, int kernel_size, int channels);
+    torch::Tensor forward(torch::Tensor input);
+    torch::Tensor backward(torch::Tensor output_gradient, double eta);
 
 };
 

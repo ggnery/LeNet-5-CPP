@@ -1,5 +1,5 @@
 #include "include/convolutional.hpp"
-#include <ATen/ops/randn.h>
+
 
 Convolutional::Convolutional(std::tuple<int, int, int> input_shape, int kernel_size, int n_kernels){
     auto [channels, input_height, input_width] = input_shape; // Input is 3D: (CxHxW)
@@ -26,4 +26,26 @@ Convolutional::Convolutional(std::tuple<int, int, int> input_shape, int kernel_s
         std::get<1>(this->output_shape), 
         std::get<2>(this->output_shape)
     });
+}
+
+torch::Tensor Convolutional::forward(torch::Tensor input) {
+    this->input = input;
+    this->output = this->bias.clone();
+
+    //            n
+    //    Yi = Bi+∑ Xj ⋆ Kj, i = 0..d
+    //            j
+    for(int i=0; i < this->n_kernels; i++){ // i = 0..d where d is the number of kernels   
+        for(int j=0; j < this->input_channels; j++){ // #  = 0..n where n is channel size of the input
+            this->output[i] += torch::conv2d(
+                this->input[j].unsqueeze(0), 
+                torch::flip(this->kernels[i][j], {0, 1}).unsqueeze(0),
+                {},
+                1,
+                "valid"
+            ).squeeze(0);
+        }
+    }
+
+    return this->output;
 }
