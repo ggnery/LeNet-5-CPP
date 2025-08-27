@@ -1,7 +1,9 @@
 #include "include/convolutional.hpp"
+#include <cstdint>
+#include <vector>
 
 
-Convolutional::Convolutional(torch::IntArrayRef input_shape, int kernel_size, int n_kernels){
+Convolutional::Convolutional(std::vector<int64_t> input_shape, int kernel_size, int n_kernels){
     // Input is 3D: (CxHxW)
     int channels = input_shape[0];
     int input_height = input_shape[1];
@@ -14,10 +16,10 @@ Convolutional::Convolutional(torch::IntArrayRef input_shape, int kernel_size, in
     // Y = I - K +1
     // The channel of the output is the same as the number of kernels
     this->output_shape = {n_kernels, input_height - kernel_size + 1, input_width - kernel_size + 1}; // Output is 3D: (dxH'xW')
-    this->kernels_shape = {n_kernels, channels, kernel_size, kernel_size}; // Kernel is 4D: (dxCxkxk)
+    this->kernels_shape = {n_kernels, channels, kernel_size, kernel_size}; // Output is 3D: (dxH'xW')
 
-    this->kernels = torch::randn(this->kernels_shape);
     this->bias = torch::randn(this->output_shape); // bias is 3D: (dxH'xW')
+    this->kernels = torch::randn(this->kernels_shape); // Kernel is 4D: (dxCxkxk) 
 }
 
 torch::Tensor Convolutional::forward(torch::Tensor input) {
@@ -64,7 +66,11 @@ torch::Tensor Convolutional::backward(torch::Tensor output_gradient, double eta)
             // ∂E/∂Xj = ∑ ∂E/∂Yi * Kij
             //          i      full 
             // Normal convolution 
-            int padding =  std::max(this->kernels_shape[2], this->kernels_shape[3]) - 1;
+            std::vector<int64_t> padding =  {
+                this->kernels_shape[2] - 1 , //height
+                this->kernels_shape[3] - 1 // width
+                };
+                
             input_gradient[j] += torch::conv2d(
                 output_gradient[i].unsqueeze(0).unsqueeze(0), 
                 torch::flip(this->kernels[i][j], {0, 1}).unsqueeze(0).unsqueeze(0),
