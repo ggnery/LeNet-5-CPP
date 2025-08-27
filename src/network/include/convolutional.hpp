@@ -2,8 +2,6 @@
 #define CONVOLUTION_HPP
 
 #include "layer.hpp"
-#include <ATen/core/ATen_fwd.h>
-#include <tuple>
 
 class Convolutional: public Layer {
     public:
