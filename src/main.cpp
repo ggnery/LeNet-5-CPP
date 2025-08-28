@@ -13,28 +13,28 @@
 
 int main(){
     torch::Tensor images = read_mnist_images("./data/t10k-images.idx3-ubyte");
-    std::cout << images.sizes() << std::endl;
     torch::Tensor labels = read_mnist_labels("./data/t10k-labels.idx1-ubyte");
-    std::cout << labels.sizes() << std::endl;
     
-    torch::Tensor x = torch::reshape(images, {images.size(0), 1, 28, 28});
-    torch::Tensor y = torch::one_hot(labels, 10).to(torch::kFloat64);
-    y = torch::reshape(y, {y.size(0), 10, 1});
-    
-    Sequential sequential = Sequential::builder()
-        .add<Convolutional>(std::vector<int64_t>{1, 28, 28}, 3, 5)
-        .add<Sigmoid>()
-        .add<Reshape>(std::vector<int64_t>{5, 26, 26}, std::vector<int64_t>{5*26*26, 1})
-        .add<Dense>(5*26*26, 100)
-        .add<Sigmoid>()
-        .add<Dense>(100, 10)
-        .add<Sigmoid>().build();
+    auto [x_train, x_test,  y_train, y_test] = preprocess_data(images, images, labels, labels);
+    std::cout << "Train images sizes: "<< x_train.sizes() << std::endl;
+    std::cout << "Train labels sizes: "<< y_train.sizes() << std::endl;
+    std::cout << "Test images sizes: "<< x_test.sizes() << std::endl;
+    std::cout << "Test labels sizes: "<< y_test.sizes() << std::endl;
+
+    // Sequential sequential = Sequential::builder()
+    //     .add<Convolutional>(std::vector<int64_t>{1, 28, 28}, 3, 5)
+    //     .add<Sigmoid>()
+    //     .add<Reshape>(std::vector<int64_t>{5, 26, 26}, std::vector<int64_t>{5*26*26, 1})
+    //     .add<Dense>(5*26*26, 100)
+    //     .add<Sigmoid>()
+    //     .add<Dense>(100, 10)
+    //     .add<Sigmoid>().build();
     
 
-    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
-    network.train(x, y, true);
+    // Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
+    // network.train(x_train, y_train, true);
     
-    double accuracy = network.accuracy(x, y);
-    std::cout << "Final model accuracy: " << accuracy << std::endl;
+    // double accuracy = network.accuracy(x_test, y_test);
+    // std::cout << "Final model accuracy: " << accuracy << std::endl;
     return 0;
 }

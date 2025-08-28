@@ -1,6 +1,8 @@
 #include "include/mnist.hpp"
+#include <ATen/ops/pad.h>
 #include <cstdlib>
 #include <fstream>
+#include <tuple>
 
 // Convert big-endian to little-endian
 uint32_t reverse_int(uint32_t i) {
@@ -75,4 +77,25 @@ torch::Tensor read_mnist_labels(const std::string& labels_path) {
 
     file.close();
     return labels;
+}
+
+std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> preprocess_data(
+    torch::Tensor train_images, 
+    torch::Tensor test_images, 
+    torch::Tensor train_labels, 
+    torch::Tensor test_labels) {
+
+        torch::Tensor x_train = torch::reshape(train_images, {train_images.size(0), 1, 28, 28});
+        x_train = torch::pad(x_train, {2,2,2,2}); // transform (n_train_images,1,28,28) to  (n_images,1,32,32) by 0 padding
+
+        torch::Tensor x_test = torch::reshape(test_images, {test_images.size(0), 1, 28, 28});
+        x_test = torch::pad(x_test, {2,2,2,2});  // transform (n_test_images,1,28,28) to  (n_images,1,32,32) by 0 padding
+
+        torch::Tensor y_train = torch::one_hot(train_labels, 10).to(torch::kFloat64);
+        y_train = torch::reshape(y_train, {y_train.size(0), 10, 1});
+
+        torch::Tensor y_test = torch::one_hot(test_labels, 10).to(torch::kFloat64);
+        y_test = torch::reshape(y_test, {y_test.size(0), 10, 1});
+
+        return {x_train, x_test, y_train, y_test};
 }
