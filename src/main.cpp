@@ -8,6 +8,7 @@
 #include "network/include/sequential.hpp"
 #include "network/include/sequential.hpp"
 #include "network/include/max_pooling.hpp"
+#include "network/include/softmax.hpp"
 #include <iostream>
 #include <vector>
 
@@ -44,10 +45,10 @@ int main(){
         .add<Dense>(120, 84)
         .add<Tanh>()
         .add<Dense>(84, 10)
-        .add<Sigmoid>()
+        .add<Softmax>()
         .build();
     
-    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
+    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_softmax_prime, 0.1, 2); 
     network.train(x_train, y_train, true);
     
     double accuracy = network.accuracy(x_test, y_test);

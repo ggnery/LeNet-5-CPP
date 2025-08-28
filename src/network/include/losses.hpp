@@ -11,13 +11,12 @@ inline torch::Tensor mse_prime(torch::Tensor y_true, torch::Tensor y_pred){
     return 2 * (y_pred - y_true) / y_true.size(0);
 }
 
-
 inline double cross_entropy(torch::Tensor y_true, torch::Tensor y_pred) {
-    return torch::sum((-y_true * torch::log(y_pred)) - ((1 - y_true) * torch::log(1 -y_pred))).item<double>();
+    return -torch::sum(y_true * torch::log(y_pred)).item<double>();
 }
 
-inline torch::Tensor cross_entropy_prime(torch::Tensor y_true, torch::Tensor y_pred) {
-    return ((1 - y_true)/(1 - y_pred) - (y_true/y_pred) ) / y_true.size(0);
+inline torch::Tensor cross_entropy_softmax_prime(torch::Tensor y_true, torch::Tensor y_pred) {
+    return y_pred - y_true;
 }
 
 #endif //LOSSES_HPP
