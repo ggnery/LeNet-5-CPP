@@ -1,5 +1,6 @@
 #include "include/mnist.hpp"
 #include <ATen/ops/pad.h>
+#include <c10/core/TensorOptions.h>
 #include <cstdlib>
 #include <fstream>
 #include <tuple>
@@ -14,7 +15,7 @@ uint32_t reverse_int(uint32_t i) {
     return ((uint32_t)c1 << 24) + ((uint32_t)c2 << 16) + ((uint32_t)c3 << 8) + c4;
 }
 
-torch::Tensor read_mnist_images(const std::string& images_path){
+torch::Tensor read_mnist_images(const std::string& images_path, torch::Device device){
     std::ifstream file(images_path, std::ios::binary);
     if (!file.is_open()) {
         std::cout << "images file not found" << std::endl;
@@ -38,7 +39,7 @@ torch::Tensor read_mnist_images(const std::string& images_path){
     file.read((char*)&n_cols, sizeof(n_cols));
     n_cols = reverse_int(n_cols);
 
-    torch::Tensor images = torch::empty({number_images, n_rows, n_cols}, torch::kFloat64);
+    torch::Tensor images = torch::empty({number_images, n_rows, n_cols}, torch::TensorOptions().dtype(torch::kFloat64).device(device));
     for(int i = 0; i<number_images; i++){
         for(int j = 0; j < n_rows; j++){
             for(int k = 0; k<n_cols; k++){
@@ -53,7 +54,7 @@ torch::Tensor read_mnist_images(const std::string& images_path){
     return images;
 }
 
-torch::Tensor read_mnist_labels(const std::string& labels_path) {
+torch::Tensor read_mnist_labels(const std::string& labels_path, torch::Device device) {
     std::ifstream file(labels_path, std::ios::binary);
     if (!file.is_open()) {
         std::cout << "labels file not found" << std::endl;
@@ -68,7 +69,7 @@ torch::Tensor read_mnist_labels(const std::string& labels_path) {
     file.read((char*)&number_items, sizeof(number_items));
     number_items = reverse_int(number_items);
 
-    torch::Tensor labels = torch::empty({number_items}, torch::kLong);
+    torch::Tensor labels = torch::empty({number_items}, torch::TensorOptions().dtype(torch::kLong).device(device));
     for (int i = 0; i < number_items; i++){
         unsigned char temp = 0;
         file.read((char*)&temp, sizeof(temp));

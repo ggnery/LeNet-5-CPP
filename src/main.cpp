@@ -12,8 +12,16 @@
 #include <vector>
 
 int main(){
-    torch::Tensor images = read_mnist_images("./data/t10k-images.idx3-ubyte");
-    torch::Tensor labels = read_mnist_labels("./data/t10k-labels.idx1-ubyte");
+    torch::Device device(
+        #ifdef TORCH_CUDA_AVAILABLE
+            torch::Device("cuda")
+        #else
+            torch::Device("cpu")
+        #endif
+    );
+
+    torch::Tensor images = read_mnist_images("./data/t10k-images.idx3-ubyte", device);
+    torch::Tensor labels = read_mnist_labels("./data/t10k-labels.idx1-ubyte", device);
     
     auto [x_train, x_test,  y_train, y_test] = preprocess_data(images, images, labels, labels);
     std::cout << "Train images sizes: "<< x_train.sizes() << std::endl;

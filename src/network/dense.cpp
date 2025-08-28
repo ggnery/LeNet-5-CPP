@@ -2,8 +2,8 @@
 
 // Constructor
 Dense::Dense(int input_size, int output_size){
-    this->weights = torch::randn({output_size, input_size}, torch::kFloat64) / std::sqrt(static_cast<double>(input_size)); // W ~ N(0, 1/sqtr(n_in))
-    this->bias = torch::randn({output_size, 1}, torch::kFloat64); // b ~ N(0, 1)
+    this->weights = torch::randn({output_size, input_size}, torch::TensorOptions().dtype(torch::kFloat64).device(device)) / std::sqrt(static_cast<double>(input_size)); // W ~ N(0, 1/sqtr(n_in))
+    this->bias = torch::randn({output_size, 1}, torch::TensorOptions().dtype(torch::kFloat64).device(device)); // b ~ N(0, 1)
 }
 
 //Forward

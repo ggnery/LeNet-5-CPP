@@ -1,6 +1,8 @@
 #include "include/sequential.hpp"
+#include <iostream>
 
 torch::Tensor Sequential::forward(torch::Tensor input) {
+    std::cout << this->device << std::endl;
     for (const auto& layer : this->layers){
         input = layer->forward(input);
     }

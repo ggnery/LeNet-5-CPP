@@ -18,8 +18,8 @@ Convolutional::Convolutional(std::vector<int64_t> input_shape, int kernel_size, 
     this->output_shape = {n_kernels, input_height - kernel_size + 1, input_width - kernel_size + 1}; // Output is 3D: (dxH'xW')
     this->kernels_shape = {n_kernels, channels, kernel_size, kernel_size}; // Output is 3D: (dxH'xW')
 
-    this->bias = torch::randn(this->output_shape, torch::kFloat64); // bias is 3D: (dxH'xW')
-    this->kernels = torch::randn(this->kernels_shape, torch::kFloat64); // Kernel is 4D: (dxCxkxk) 
+    this->bias = torch::randn(this->output_shape, torch::TensorOptions().dtype(torch::kFloat64).device(device)); // bias is 3D: (dxH'xW')
+    this->kernels = torch::randn(this->kernels_shape, torch::TensorOptions().dtype(torch::kFloat64).device(device)); // Kernel is 4D: (dxCxkxk) 
 }
 
 torch::Tensor Convolutional::forward(torch::Tensor input) {
@@ -47,8 +47,8 @@ torch::Tensor Convolutional::forward(torch::Tensor input) {
 }
 
 torch::Tensor Convolutional::backward(torch::Tensor output_gradient, double eta){
-    torch::Tensor kernels_gradient = torch::zeros(this->kernels_shape, torch::kFloat64);
-    torch::Tensor input_gradient = torch::zeros(this->input_shape, torch::kFloat64);
+    torch::Tensor kernels_gradient = torch::zeros(this->kernels_shape, torch::TensorOptions().dtype(torch::kFloat64).device(device));
+    torch::Tensor input_gradient = torch::zeros(this->input_shape, torch::TensorOptions().dtype(torch::kFloat64).device(device));
 
     for(int i = 0; i < this->n_kernels; i++){ // i = 0..d where d is the number of kernels   
         for(int j = 0; j < this->input_channels; j++){ // j = 0..n where n is channel size of the input
