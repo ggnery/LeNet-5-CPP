@@ -1,4 +1,6 @@
 #include "include/network.hpp"
+#include <ATen/ops/argmax.h>
+#include <ATen/ops/equal.h>
 #include <iostream>
 
 torch::Tensor Network::eval(torch::Tensor input){
@@ -25,4 +27,15 @@ void Network::train(torch::Tensor x_train, torch::Tensor y_train, bool verbose){
             std::cout << "Loss in epoch " << epoch + 1 <<": " << loss_sum/train_size << std::endl;
         }
     }
+}
+
+double Network::accuracy(torch::Tensor x_test, torch::Tensor y_test) {
+    long sum = 0;
+    for (int i=0; i<y_test.size(0); i++) {
+        torch::Tensor x = x_test[i];
+        torch::Tensor y = y_test[i];
+
+        if (torch::equal(torch::argmax(eval(x)), torch::argmax(y))) sum++;
+    }
+    return static_cast<double>(sum) / y_test.size(0);
 }

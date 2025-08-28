@@ -30,12 +30,10 @@ int main(){
         .add<Sigmoid>().build();
     
 
-    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 50); 
+    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
     network.train(x, y, true);
     
-    // for (int i = 0; i < x_test.size(0); i++){
-    //     std::cout << network.eval(x_test[i]) << std::endl;
-    // }
-    
+    double accuracy = network.accuracy(x, y);
+    std::cout << "Final model accuracy: " << accuracy << std::endl;
     return 0;
 }
