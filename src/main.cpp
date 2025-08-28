@@ -21,20 +21,28 @@ int main(){
     std::cout << "Test images sizes: "<< x_test.sizes() << std::endl;
     std::cout << "Test labels sizes: "<< y_test.sizes() << std::endl;
 
-    // Sequential sequential = Sequential::builder()
-    //     .add<Convolutional>(std::vector<int64_t>{1, 28, 28}, 3, 5)
-    //     .add<Sigmoid>()
-    //     .add<Reshape>(std::vector<int64_t>{5, 26, 26}, std::vector<int64_t>{5*26*26, 1})
-    //     .add<Dense>(5*26*26, 100)
-    //     .add<Sigmoid>()
-    //     .add<Dense>(100, 10)
-    //     .add<Sigmoid>().build();
+    Sequential sequential = Sequential::builder()
+        .add<Convolutional>(std::vector<int64_t>{1, 32, 32}, 5, 6)
+        .add<Tanh>()
+        .add<MaxPooling>(std::vector<int64_t>{2, 2}, 2)
+        .add<Tanh>()
+        .add<Convolutional>(std::vector<int64_t>{6, 14, 14}, 5, 16)
+        .add<Tanh>()
+        .add<MaxPooling>(std::vector<int64_t>{2, 2}, 2)
+        .add<Tanh>()
+        .add<Convolutional>(std::vector<int64_t>{16, 5, 5}, 5, 120)
+        .add<Tanh>()
+        .add<Reshape>(std::vector<int64_t>{120, 1, 1}, std::vector<int64_t>{120, 1})
+        .add<Dense>(120, 84)
+        .add<Tanh>()
+        .add<Dense>(84, 10)
+        .add<Sigmoid>()
+        .build();
     
-
-    // Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
-    // network.train(x_train, y_train, true);
+    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 2); 
+    network.train(x_train, y_train, true);
     
-    // double accuracy = network.accuracy(x_test, y_test);
-    // std::cout << "Final model accuracy: " << accuracy << std::endl;
+    double accuracy = network.accuracy(x_test, y_test);
+    std::cout << "Final model accuracy: " << accuracy << std::endl;
     return 0;
 }

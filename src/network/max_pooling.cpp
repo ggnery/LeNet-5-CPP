@@ -12,8 +12,7 @@ torch::Tensor MaxPooling::backward(torch::Tensor output_gradient, double eta){
     return torch::max_unpool2d(
         output_gradient.unsqueeze(0),
         this->indices,
-        this->input.sizes()
-
+        {this->input.size(1), this->input.size(2)}
     ).squeeze(0);
 }
 
