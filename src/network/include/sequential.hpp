@@ -7,6 +7,14 @@ class Sequential: public Layer {
 private:
     std::vector<std::unique_ptr<Layer>> layers;
 public:
+    // Delete copy constructor and copy assignment
+    Sequential(const Sequential&) = delete;
+    Sequential& operator=(const Sequential&) = delete;
+    
+    // Add move constructor and move assignment
+    Sequential(Sequential&&) = default;
+    Sequential& operator=(Sequential&&) = default;
+
     torch::Tensor forward(torch::Tensor input);
     torch::Tensor backward(torch::Tensor output_gradient, double eta);
     

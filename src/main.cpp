@@ -1,6 +1,5 @@
 #include "network/include/dense.hpp"
 #include "network/include/activations.hpp"
-#include "network/include/layer.hpp"
 #include "network/include/losses.hpp"
 #include "network/include/network.hpp"
 #include "network/include/convolutional.hpp"
@@ -31,7 +30,7 @@ int main(){
         .add<Sigmoid>().build();
     
 
-    Network network = Network(sequential, cross_entropy, cross_entropy_prime, 0.1, 50); 
+    Network network = Network(std::move(sequential), cross_entropy, cross_entropy_prime, 0.1, 50); 
     network.train(x, y, true);
     
     // for (int i = 0; i < x_test.size(0); i++){
