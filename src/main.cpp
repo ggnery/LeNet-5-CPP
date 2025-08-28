@@ -21,10 +21,12 @@ int main(){
         #endif
     );
 
-    torch::Tensor images = read_mnist_images("./data/t10k-images.idx3-ubyte", device);
-    torch::Tensor labels = read_mnist_labels("./data/t10k-labels.idx1-ubyte", device);
-    
-    auto [x_train, x_test,  y_train, y_test] = preprocess_data(images, images, labels, labels);
+    torch::Tensor images_test = read_mnist_images("./data/t10k-images.idx3-ubyte", device);
+    torch::Tensor labels_test = read_mnist_labels("./data/t10k-labels.idx1-ubyte", device);
+    torch::Tensor images_train = read_mnist_labels("./data/train-images.idx3-ubyte", device);
+    torch::Tensor labels_train = read_mnist_labels("./data/train-labels.idx1-ubyte", device);
+
+    auto [x_train, x_test,  y_train, y_test] = preprocess_data(images_train, images_test, labels_train, labels_test);
     std::cout << "Train images sizes: "<< x_train.sizes() << std::endl;
     std::cout << "Train labels sizes: "<< y_train.sizes() << std::endl;
     std::cout << "Test images sizes: "<< x_test.sizes() << std::endl;

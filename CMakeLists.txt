@@ -4,6 +4,13 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 23)
 
+# Option to enable CUDA (can be set via -DWITH_CUDA=ON)
+option(WITH_CUDA "Enable CUDA support" OFF)
+
+if(WITH_CUDA)
+    add_compile_definitions(TORCH_CUDA_AVAILABLE)
+endif()
+
 # Set the path to libtorch
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/libtorch")
 
