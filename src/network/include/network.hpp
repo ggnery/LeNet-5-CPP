@@ -5,7 +5,7 @@
 #include <functional>
 
 class Network { 
-    public:
+private:
 
     Sequential sequential;
     std::function<double(torch::Tensor, torch::Tensor)> loss;
@@ -13,6 +13,7 @@ class Network {
     double eta;
     size_t epochs;
 
+public:
     Network(
         Sequential&& sequential,
         std::function<double(torch::Tensor, torch::Tensor)> loss,

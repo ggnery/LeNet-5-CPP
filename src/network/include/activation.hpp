@@ -5,13 +5,14 @@
 #include <functional>
 
 class Activation: public Layer {
-    public:
+protected:
     //Calback function that computes the activation function f(X): R^n->R^n 
     std::function<torch::Tensor(torch::Tensor)> f; 
     
     //Calback function that computes the derivative of activation function f'(X): R^n->R^n 
     std::function<torch::Tensor(torch::Tensor)> f_prime; 
 
+public:
     // Constructor
     Activation(std::function<torch::Tensor(torch::Tensor)> f, std::function<torch::Tensor(torch::Tensor)> f_prime);
 

@@ -4,13 +4,13 @@
 #include <torch/script.h>
 
 class Layer{
-    public:
-        torch::Tensor input;
-        torch::Tensor output;
-
-        virtual ~Layer() = default;
-        virtual torch::Tensor forward(torch::Tensor input) = 0;
-        virtual torch::Tensor backward(torch::Tensor output_gradient, double eta) = 0;
+protected:
+    torch::Tensor input;
+    torch::Tensor output;
+public:
+    virtual ~Layer() = default;
+    virtual torch::Tensor forward(torch::Tensor input) = 0;
+    virtual torch::Tensor backward(torch::Tensor output_gradient, double eta) = 0;
 };
 
 #endif // LAYER_HPP

@@ -4,7 +4,7 @@
 #include "layer.hpp"
 
 class Convolutional: public Layer {
-    public:
+private:
     std::vector<int64_t> input_shape; // (CxHxW)
     std::vector<int64_t> output_shape; // (dxH'xW')
     std::vector<int64_t> kernels_shape; // (dxCxkxk)
@@ -14,7 +14,7 @@ class Convolutional: public Layer {
 
     torch::Tensor kernels;
     torch::Tensor bias;
-
+public:
     Convolutional(std::vector<int64_t> input_shape, int kernel_size, int n_kernels);
     torch::Tensor forward(torch::Tensor input);
     torch::Tensor backward(torch::Tensor output_gradient, double eta);

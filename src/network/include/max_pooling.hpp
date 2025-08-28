@@ -7,10 +7,11 @@
 #include <vector>
 
 class MaxPooling: public Layer {
-public:
+private:
     std::vector<int64_t> kernel_size;
     torch::Tensor indices;    
     int stride;
+public:
     //Constructor
     MaxPooling(std::vector<int64_t> kernel_size, int stride): kernel_size(kernel_size), stride(stride) {};
 

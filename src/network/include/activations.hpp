@@ -5,8 +5,7 @@
 #include "math_utils.hpp"
 
 class Tanh: public Activation{
-    public:
-
+public:
     //Constructor
     Tanh(): Activation(
         [](torch::Tensor x) { return torch::tanh(x); },
@@ -16,8 +15,7 @@ class Tanh: public Activation{
 };
 
 class Sigmoid: public Activation{
-    public:
-
+public:
     // Constructor
     Sigmoid(): Activation (
         [](torch::Tensor x) { return torch::sigmoid(x); }, 
