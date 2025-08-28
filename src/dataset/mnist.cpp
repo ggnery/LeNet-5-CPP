@@ -1,8 +1,6 @@
 #include "include/mnist.hpp"
-#include <ATen/ops/empty.h>
 #include <cstdlib>
 #include <fstream>
-#include <torch/types.h>
 
 // Convert big-endian to little-endian
 uint32_t reverse_int(uint32_t i) {

@@ -1,24 +1,8 @@
 #include "include/network.hpp"
 #include <iostream>
 
-Network::Network(
-    std::vector<std::unique_ptr<Layer>> layers,
-    std::function<double(torch::Tensor, torch::Tensor)> loss,
-    std::function<torch::Tensor(torch::Tensor, torch::Tensor)> loss_prime,
-    double eta,
-    size_t epochs){
-        this->layers = std::move(layers);
-        this->loss = loss;
-        this->loss_prime = loss_prime;
-        this->eta = eta;
-        this->epochs = epochs;
-    }
-
 torch::Tensor Network::eval(torch::Tensor input){
-    for (const auto& layer : this->layers){
-        input = layer->forward(input);
-    }
-    return input;
+    return this->sequential.forward(input);
 }
 
 void Network::train(torch::Tensor x_train, torch::Tensor y_train, bool verbose){
@@ -34,9 +18,7 @@ void Network::train(torch::Tensor x_train, torch::Tensor y_train, bool verbose){
 
             //backward
             torch::Tensor output_gradient = this->loss_prime(y, y_pred);
-            for(int j = this->layers.size() - 1; j >= 0; j--) {
-                output_gradient = this->layers[j]->backward(output_gradient, this->eta);
-            }
+            this->sequential.backward(output_gradient, eta);
         }
 
         if (verbose){
