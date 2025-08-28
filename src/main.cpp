@@ -7,6 +7,7 @@
 #include "network/include/reshape.hpp"
 #include "network/include/sequential.hpp"
 #include "network/include/sequential.hpp"
+#include "network/include/max_pooling.hpp"
 #include <iostream>
 #include <vector>
 
