@@ -1,5 +1,7 @@
 # 🔥 LeNet-5 C++ (Mini-torch)
 
+![MNIST Dataset Example](./images/MNIST_dataset_example.png)
+
 A lightweight, educational deep learning framework built from scratch in C++ using PyTorch's LibTorch backend. This project implements a complete neural network framework with support for convolutional layers, dense layers, various activation functions, and training on the MNIST dataset.
 
 ## What is Mini-Torch?
