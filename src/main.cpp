@@ -23,7 +23,7 @@ int main(){
 
     torch::Tensor images_test = read_mnist_images("./data/t10k-images.idx3-ubyte", device);
     torch::Tensor labels_test = read_mnist_labels("./data/t10k-labels.idx1-ubyte", device);
-    torch::Tensor images_train = read_mnist_labels("./data/train-images.idx3-ubyte", device);
+    torch::Tensor images_train = read_mnist_images("./data/train-images.idx3-ubyte", device);
     torch::Tensor labels_train = read_mnist_labels("./data/train-labels.idx1-ubyte", device);
 
     auto [x_train, x_test,  y_train, y_test] = preprocess_data(images_train, images_test, labels_train, labels_test);
