@@ -20,6 +20,7 @@ int main(){
             torch::Device("cpu")
         #endif
     );
+    std::cout << "device: " << device << std::endl;
 
     torch::Tensor images_test = read_mnist_images("./data/t10k-images.idx3-ubyte", device);
     torch::Tensor labels_test = read_mnist_labels("./data/t10k-labels.idx1-ubyte", device);

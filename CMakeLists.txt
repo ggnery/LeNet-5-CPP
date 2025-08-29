@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.28.3)
 set(PROJECT_NAME "mini_torch")
 project(${PROJECT_NAME})
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_C_COMPILER gcc-12)
+set(CMAKE_CXX_COMPILER g++-12)
+
+set(CMAKE_CXX_STANDARD 17)
 
 # Option to enable CUDA (can be set via -DWITH_CUDA=ON)
 option(WITH_CUDA "Enable CUDA support" OFF)

@@ -56,9 +56,24 @@ Output (10 classes)
 ## Prerequisites
 
 - **CMake** 3.28.3 or higher
-- **C++23** compatible compiler (GCC 12+, Clang 15+)
+- **GCC 12** (specifically gcc-12 and g++-12 for Ubuntu 24.04)
+- **C++17** compatible compiler
 - **LibTorch** 2.8.0 (automatically downloaded by build script)
 - **CUDA** (optional, for GPU acceleration)
+
+### Installing GCC-12 on Ubuntu 24.04
+
+```bash
+# Update package list
+sudo apt update
+
+# Install GCC-12 and G++-12
+sudo apt install gcc-12 g++-12
+
+# Verify installation
+gcc-12 --version
+g++-12 --version
+```
 
 ## Quick Start
 
@@ -147,7 +162,7 @@ mini-torch/
 This project is perfect for:
 
 - **Learning Deep Learning Fundamentals**: See how gradients flow through networks
-- **Understanding C++ in ML**: Modern C++23 features in machine learning context
+- **Understanding C++ in ML**: Modern C++17 features in machine learning context
 - **Framework Design**: How to structure a ML library with clean abstractions
 - **Performance Optimization**: CPU vs GPU computation trade-offs
 - **Computer Vision**: Classic CNN architectures and their implementation
@@ -191,7 +206,7 @@ Want to experiment? Try:
 
 ## Common Issues
 
-**Build Errors**: Ensure you have C++23 support and the correct LibTorch version
+**Build Errors**: Ensure you have GCC-12 and C++17 support with the correct LibTorch version
 **CUDA Issues**: Verify your CUDA version matches the LibTorch variant
 **Memory Errors**: The current implementation loads full dataset into memory
 **Performance**: CPU training is slow - consider GPU version for larger experiments
